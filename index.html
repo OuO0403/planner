@@ -265,20 +265,7 @@ function fmtDate(str){const[y,m,d]=str.split("-").map(Number);const dt=new Date(
   return `${y}.${String(m).padStart(2,"0")}.${String(d).padStart(2,"0")} 週${"日一二三四五六"[dt.getDay()]}`;}
 
 /* ---------- 預設清單 ---------- */
-const SEED = [
-  ["看畢業門檻（時數·必修·體適能·程式檢定·英檢）","now"],["整理履歷（數位學伴）","now"],
-  ["找補習班打工，存錢買平板/Switch/手機","now"],["住住看花蓮民宿 maru","now"],["東華社團","now"],
-  ["台鐵 5 日券環島","now"],["和欣客運（接駁/回程）","now"],
-  ["寫每日小記錄","routine"],["記帳","routine"],["做體操","routine"],["學唱歌＋錄音","routine"],
-  ["練習演講報告","routine"],["畫畫","routine"],["學語言","routine"],["學宅舞（從偶像夢幻祭開始）","routine"],
-  ["賣貨便找便宜食材（雞胸肉·黃油）","routine"],
-  ["嘗試從租屋處走去上課（搬家後）","timed"],["國中數學教材","timed"],["想數學教案（遊戲）","timed"],
-  ["做塔防遊戲","timed"],["研究出國、旅遊","timed"],["牙齒美白","timed"],["參加比賽","timed"],
-  ["自己做衣服","someday"],["客製化貼紙 / 做貼紙","someday"],["Live2D","someday"],["用 LaTeX 畫圖","someday"],
-  ["做乳酪蛋糕","someday"],["南瓜濃湯","someday"],["食玩","someday"],["泡澡布桶","someday"],["刮痧","someday"],
-  ["扭蛋機","someday"],["補完動漫與遊戲（原神·馴龍·少年悍將·未定）","someday"],["TRPG","someday"],
-  ["看 AI 對話紀錄","someday"],["整理週邊、拍好看照片發脆","someday"],["錄吃飯影片 / 一天 Vlog","someday"],["讀完買的書","someday"],
-].map(([text,category])=>({id:uid(),text,category,done:false}));
+const SEED = [];
 
 /* ---------- 狀態 ---------- */
 const load=(k,f)=>{try{const v=LS.getItem(k);return v?JSON.parse(v):f;}catch(e){return f;}};
@@ -286,9 +273,8 @@ const CURMON=todayStr().slice(0,7);
 function loadMonthGoals(){
   const mg=load("pl-mgoals",null);
   if(mg) return mg;
-  const old=load("pl-month",null); // 舊版單月陣列 → 遷移到當月
-  const seed=SEED.filter(t=>t.category==="now").map(t=>({id:uid(),text:t.text,done:false}));
-  return {[CURMON]: old||seed};
+  const old=load("pl-month",null); // 舊版資料若有則沿用
+  return old?{[CURMON]:old}:{};
 }
 let state = {
   tab:"list",
